@@ -1,0 +1,13 @@
+{
+	"book": [
+		{ "mode": "easy", "collection": ["family", "head", "kitchen"] },
+		{
+			"mode": "medium",
+			"collection": ["expectation", "university", "alignment"]
+		},
+		{
+			"mode": "hard",
+			"collection": ["agriculture", "consequence", "governance"]
+		}
+	]
+}

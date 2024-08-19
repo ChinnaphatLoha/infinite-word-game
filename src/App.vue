@@ -4,7 +4,11 @@ import useRouter from './libs/router';
 import useGameStore from './stores/game-store';
 
 import { pages, PAGE, FIRST_PAGE_NAME } from './configs/page-config';
-import { difficulties, LEVELS_PER_MODE } from './configs/game-config';
+import {
+	difficulties,
+	MODE_COMPLETED_PRIZE,
+	WORDS_PER_ROUND,
+} from './configs/game-config';
 import { book } from './vocabulary.json';
 
 const { navigate, playRoutes, on } = useRouter(pages, FIRST_PAGE_NAME);
@@ -16,10 +20,13 @@ const {
 	stackLetter,
 	clearStack,
 	validateLetter,
+	saveCompletedWord,
+	receiveHint,
+	useHint,
 	isLastPage,
-	isLevelCompleted,
+	isBookCompleted,
 	currentCharArray,
-} = useGameStore(book, { LEVELS_PER_MODE });
+} = useGameStore(book, { MODE_COMPLETED_PRIZE, WORDS_PER_ROUND });
 
 const clickedLetters = ref({});
 
@@ -31,20 +38,24 @@ watch(
 				currentCharArray.value.length && currentCharArray.value.length > 0;
 
 		if (isAllClicked) {
-			if (validateLetter() && !isLastPage()) {
-				console.log('Correct');
-				turnToPage({ mode: onPage.mode, index: onPage.index + 1 });
-				if (isLevelCompleted()) {
-					console.log('Level Completed');
+			if (validateLetter()) {
+				saveCompletedWord();
+				if (!isLastPage()) {
+					turnToPage({ mode: onPage.mode, index: onPage.index + 1 });
 					playRoutes({ pageNames: [PAGE.LEVEL_COMPLETED, PAGE.GAME] });
+				} else {
+					playRoutes({
+						pageNames: [
+							PAGE.LEVEL_COMPLETED,
+							PAGE.MODE_COMPLETED,
+							isBookCompleted() ? PAGE.GAME_COMPLETED : '',
+							PAGE.MODE,
+						],
+					});
+					receiveHint();
+					resetInGameState();
+					return;
 				}
-			} else if (validateLetter() && isLastPage()) {
-				console.log('Mode Completed');
-				playRoutes({
-					pageNames: [PAGE.LEVEL_COMPLETED, PAGE.MODE_COMPLETED, PAGE.MODE],
-				});
-				resetInGameState();
-				return;
 			}
 			clearStack();
 			clickedLetters.value = {};
@@ -147,7 +158,7 @@ watch(
 				>
 					Clear
 				</button>
-				<button>Hints</button>
+				<button @click="useHint(clickedLetters)">Hints</button>
 			</div>
 		</div>
 		<!-- Level Completed View -->

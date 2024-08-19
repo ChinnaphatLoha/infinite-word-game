@@ -1,13 +1,28 @@
 {
 	"book": [
-		{ "mode": "easy", "collection": ["family", "head", "kitchen"] },
+		{
+			"mode": "easy",
+			"collection": [
+				{ "id": 1, "word": "family" },
+				{ "id": 2, "word": "head" },
+				{ "id": 3, "word": "kitchen" }
+			]
+		},
 		{
 			"mode": "medium",
-			"collection": ["expectation", "university", "alignment"]
+			"collection": [
+				{ "id": 1, "word": "expectation" },
+				{ "id": 2, "word": "university" },
+				{ "id": 3, "word": "alignment" }
+			]
 		},
 		{
 			"mode": "hard",
-			"collection": ["agriculture", "consequence", "governance"]
+			"collection": [
+				{ "id": 1, "word": "agriculture" },
+				{ "id": 2, "word": "consequence" },
+				{ "id": 3, "word": "governance" }
+			]
 		}
 	]
 }

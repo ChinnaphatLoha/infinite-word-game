@@ -14,3 +14,11 @@ export const shuffleArray = (array) => {
 
     return array;
 }
+
+export const buildMap = (keys, values) => {
+    const source = keys.reduce((acc, key, index) => {
+        acc[key] = values[index];
+        return acc;
+    }, {});
+    return new Map(Object.entries(source));
+}
